@@ -1,6 +1,6 @@
 {
   "name": "@ido_kawaz/mongo-client",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "MongoDB client library for Kawaz Plus services",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
