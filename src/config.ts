@@ -1,27 +1,19 @@
-import Joi from "joi";
+import { z } from "zod";
 
 export interface MongoConfig {
     mongoConnectionString: string;
     mongoConnectionTimeoutMS: number;
 }
 
-interface MongoEnv {
-    MONGO_CONNECTION_STRING: string;
-    MONGO_CONNECTION_TIMEOUT_MS: number;
-}
-
-const mongoEnvSchema = Joi.object<MongoEnv>({
-    MONGO_CONNECTION_STRING: Joi.string().uri().required(),
-    MONGO_CONNECTION_TIMEOUT_MS: Joi.number().default(5000)
+const mongoEnvSchema = z.object({
+    MONGO_CONNECTION_STRING: z.url(),
+    MONGO_CONNECTION_TIMEOUT_MS: z.coerce.number().default(5000)
 });
 
 export const createMongoConfig = (): MongoConfig => {
-    const { error, value } = mongoEnvSchema.validate(process.env, { allowUnknown: true });
-    if (error) {
-        throw new Error(`Invalid MongoDB configuration: ${error.message}`);
-    }
+    const parsedEnv = mongoEnvSchema.parse(process.env);
     return {
-        mongoConnectionString: value.MONGO_CONNECTION_STRING,
-        mongoConnectionTimeoutMS: value.MONGO_CONNECTION_TIMEOUT_MS
+        mongoConnectionString: parsedEnv.MONGO_CONNECTION_STRING,
+        mongoConnectionTimeoutMS: parsedEnv.MONGO_CONNECTION_TIMEOUT_MS
     };
 };
