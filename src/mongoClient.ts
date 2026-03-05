@@ -2,7 +2,7 @@ import mongoose, { Connection, Model, Schema } from "mongoose";
 import { MongoConfig } from "./config";
 import { DatabaseConnectionError } from "./errors";
 
-type ModelCollection = Model<any>[];
+type ModelCollection = Record<string, Model<any>>;
 
 export class MongoClient {
     private connection: Connection;
