@@ -31,7 +31,7 @@ async function bootstrap() {
 	await mongoClient.start();
 
 	const userModel = mongoClient.createModel<User>("User", userSchema);
-	await mongoClient.ensureIndexes([userModel]);
+	await mongoClient.ensureIndexes({ userModel });
 
 	// Use your model or pass it into your DAL layer.
 }
